@@ -1,0 +1,18 @@
+services:
+  pi-agent:
+    build: .
+    working_dir: /workspace
+    volumes:
+      # 1. The isolated project directory (Sandbox)
+      - ~/pi-workspace:/workspace
+
+      # 2. Map local Pi settings to the container's root home directory
+      - ~/.pi:/root/.pi
+
+    # environment:
+    #   # Pass the API key from your host's environment into the container
+    #   - OPENAI_API_KEY=${OPENAI_API_KEY}
+
+    # Maintain interactive terminal allocation for CLI tools
+    stdin_open: true
+    tty: true
