@@ -14,6 +14,7 @@ RUN apt-get update && \
 ENV PATH="/root/.local/bin:$PATH"
 ENV SHELL="/bin/bash"
 ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PNPM_STORE_DIR="/root/.local/share/pnpm/store"
 ENV PATH="$PNPM_HOME:$PATH"
 
 RUN curl -fsSL https://get.pnpm.io/install.sh | sh -

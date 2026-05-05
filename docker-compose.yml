@@ -9,6 +9,14 @@ services:
       # 2. Map local Pi settings to the container's root home directory
       - ~/.pi:/root/.pi
 
+      # 3. Override the node_modules and pnpm store in the container
+      - code_agent_node_modules:/workspace/node_modules
+      - code_agent_pnpm_store:/root/.local/share/pnpm
+
+    environment:
+      PNPM_HOME: /root/.local/share/pnpm
+      PNPM_STORE_DIR: /root/.local/share/pnpm/store
+
     # environment:
     #   # Pass the API key from your host's environment into the container
     #   - OPENAI_API_KEY=${OPENAI_API_KEY}
@@ -16,3 +24,7 @@ services:
     # Maintain interactive terminal allocation for CLI tools
     stdin_open: true
     tty: true
+
+volumes:
+  code_agent_node_modules:
+  code_agent_pnpm_store:
