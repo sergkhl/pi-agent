@@ -7,15 +7,26 @@ services:
       - ~/pi-workspace:/workspace
 
       # 2. Map local Pi settings to the container's root home directory
-      - ~/.pi:/root/.pi
+      - ~/.pi:/node/.pi
 
       # 3. Override the node_modules and pnpm store in the container
       - code_agent_node_modules:/workspace/node_modules
-      - code_agent_pnpm_store:/root/.local/share/pnpm
+      - code_agent_pnpm_store:/node/.local/share/pnpm
+
+      # 4. ssh
+      # - ~/.ssh/known_hosts:/node/.ssh/known_hosts
+      - ~/.ssh/id_ed25519:/node/.ssh/id_ed25519:ro
+      - ~/.ssh/id_ed25519.pub:/node/.ssh/id_ed25519.pub:ro
+      # ^^^ this needs additional config in the container:
+      # git config --global core.sshCommand "ssh -i /node/.ssh/id_ed25519 -o IdentitiesOnly=yes -F /dev/null"
+      # - code_agent_ssh:/node/.ssh
+      # - ${SSH_AUTH_SOCK}:/ssh-agent
 
     environment:
-      PNPM_HOME: /root/.local/share/pnpm
-      PNPM_STORE_DIR: /root/.local/share/pnpm/store
+      PNPM_HOME: /node/.local/share/pnpm
+      PNPM_STORE_DIR: /node/.local/share/pnpm/store
+      HOME: /node
+      # SSH_AUTH_SOCK: /ssh-agent
 
     # environment:
     #   # Pass the API key from your host's environment into the container
@@ -28,3 +39,4 @@ services:
 volumes:
   code_agent_node_modules:
   code_agent_pnpm_store:
+  # code_agent_ssh:
